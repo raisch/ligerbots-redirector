@@ -138,7 +138,7 @@ app.get('/api/redirects/:id', (req, res) => {
 
 // POST /api/redirects
 app.post('/api/redirects', urlEncodedParser, async (req, res) => {
-  const { id, url } = req.body
+  let { id, url } = req.body
 
   console.log(req.body)
 
