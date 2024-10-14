@@ -7,6 +7,7 @@ import { readFile, writeFile } from 'fs/promises'
 import shortid from 'shortid'
 import express from 'express'
 import cookieParser from 'cookie-parser'
+import bodyParser from 'body-parser'
 
 const { combine, timestamp, prettyPrint } = format
 
@@ -38,6 +39,7 @@ const redirects = await readRedirects()
 var app = express()
 
 app.use(cookieParser(SECURE_COOKIE_SECRET))
+app.use(bodyParser.json())
 app.use(express.json())
 app.use(express.static('public'))
 
