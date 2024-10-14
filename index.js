@@ -9,6 +9,9 @@ import express from 'express'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 
+const jsonParser = bodyParser.json()
+const urlEncodedParser = bodyParser.urlencoded({ extended: false })
+
 const { combine, timestamp, prettyPrint } = format
 
 const SECURE_COOKIE_SECRET = process.env.SECURE_COOKIE_SECRET
@@ -120,6 +123,8 @@ const routeHandler = (req, res) => {
 app.get('/u/:id', routeHandler) // from web
 app.get('/u/:id/m', routeHandler) // from email
 
+// ========== API ==========
+
 // GET /api/redirects
 app.get('/api/redirects', (req, res) => {
   res.json(redirects)
@@ -132,7 +137,7 @@ app.get('/api/redirects/:id', (req, res) => {
 })
 
 // POST /api/redirects
-app.post('/api/redirects', bodyParser.json(), async (req, res) => {
+app.post('/api/redirects', urlEncodedParser, async (req, res) => {
   const { id, url } = req.body
 
   console.log(req.body)
