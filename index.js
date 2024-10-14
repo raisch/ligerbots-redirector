@@ -135,6 +135,8 @@ app.post('/api/redirects', async (req, res) => {
 
   console.log(req.json)
 
+  console.log(req.body)
+
   if (!url) {
     res.status(400).send('url required')
     return
