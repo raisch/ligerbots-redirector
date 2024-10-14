@@ -6,19 +6,49 @@
 
 <body>
   <h1>Test of LigerBots URL Shortening Service</h1>
-  <p>This is a simple URL shortening service that redirects a browser to a long url
-    when it receives a request for a short url.</p>
-  <p>Short URLs take two forms:</p>
+
+  <p>This is a simple URL shortening service that redirects a browser when it receives a request
+    for a URL with a "short code" to another longer url.</p>
+  <p>Short code URLs take two forms:</p>
   <ul>
     <li><code>/u/XXXXX</code> where <code>XXXXX</code> is a short code that is used to redirect to
       the long URL, and</li>
-    <li><code>/u/XXXXX/m</code> which is the same with a trailing <code>/m</code> that indicates
-      the short url originated in an email message.</li>
+    <li><code>/u/XXXXX/m</code> which is the same but with a trailing <code>/m</code> to indicate
+      that the short url was clicked from an email message.</li>
   </ul>
-  <p>For example, the long URL <code>http://www.ligerbots.com/</code> has the short URL
-    <code>http://sandbox.0mo.cc/u/1q1q1q</code>.
+  <p>For example, the long URL <code>http://www.ligerbots.com/</code> has the short code
+    <code>1q1q1q</code> which is used in the URL <code>http://sandbox.0mo.cc/u/1q1q1q</code>.
   </p>
-  <p>You can try it here: <a href="https://sandbox.0mo.cc/u/1q1q1q">LigerBots Home</a></p>
+  <p>You can try it here: <a href="https://sandbox.0mo.cc/u/1q1q1q" target="_blank">LigerBots Home</a></p>
+
+  <p>This service also "drops a cookie" into the browser of the user to uniquely identify her. Once
+    the cookie is set, the service will track the number of times the user clicks on short URLs.
+  </p>
+  <hr />
+  <p>This service provides a simple API which is used to view the short->long URL mappings, and
+    to create new short URLs. The API is:</p>
+  <ul>
+    <li><code>GET /api/redirects</code> to get a list of all short codes and their matching long URLs</li>
+    <li><code>GET /api/redirects/:id</code> to get the long URL for a specific short code</li>
+    <li><code>POST /api/redirects</code> to create a new short URL. The body of this request
+      can either be:
+      <ul>
+        <li><code>{ "url": "target long url" }</code> in which case the service will create a
+          new random short url, or</li>
+        <li><code>{ "id": "short code", "url": "target long url" }</code> in which case the
+          service will create a mapping between the short code and the target URL.</li>
+      </ul>
+    </li>
+  </ul>
+  <p>For example, to create a new short URL for <code>http://www.ligerbots.com/</code> you can
+    use the following form:</p>
+  <form action="https://sandbox.0mo.cc/api/redirects" method="post">
+    <label for="shortcode">Short Code:</label>
+    <input type="text" id="shortcode" name="id" value="1q1q1q">
+    <label for="url">URL:</label>
+    <input type="text" id="url" name="url" value="http://www.ligerbots.com/">
+    <input type="submit" value="Create Short URL">
+  </form>
 </body>
 
 </html>

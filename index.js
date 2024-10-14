@@ -131,7 +131,9 @@ app.get('/api/redirects/:id', (req, res) => {
 
 // POST /api/redirects
 app.post('/api/redirects', async (req, res) => {
-  const { id, url } = req.body
+  const { id, url } = req.json
+
+  console.log(req.json)
 
   if (!url) {
     res.status(400).send('url required')
