@@ -136,6 +136,15 @@ app.get('/api/redirects/:id', (req, res) => {
   res.json({ [id]: redirects[id] })
 })
 
+app.get('/api/cookies', (req, res) => {
+  res.json(req.signedCookies)
+})
+
+app.get('/api/cookie/clear', (req, res) => {
+  res.clearCookie(SECURE_COOKIE_NAME)
+  res.json(req.signedCookies)
+})
+
 // POST /api/redirects
 app.post('/api/redirects', urlEncodedParser, async (req, res) => {
   let { id, url } = req.body
