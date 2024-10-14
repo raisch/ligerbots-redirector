@@ -15,6 +15,11 @@ if (!SECURE_COOKIE_SECRET) {
   throw new Error('requires env.SECURE_COOKIE_SECRET')
 }
 
+const SECURE_COOKIE_NAME = process.env.SECURE_COOKIE_NAME
+if (!SECURE_COOKIE_NAME) {
+  throw new Error('requires env.SECURE_COOKIE_NAME')
+}
+
 const readRedirects = async () => {
   const filepath = process.env.REDIRECTS_FILEPATH
   if (!filepath) {
@@ -38,21 +43,21 @@ app.use(express.static('public'))
 
 // Middleware to set a user id in a cookie
 app.use((req, res, next) => {
-  console.log(req.url)
-  const source = req.url.match(/\/m$/i) ? 'EMAIL' : 'WEB'
+  const source = req.url.match(/\/m$/i) ? 'email' : 'web'
 
-  if (req.signedCookies['lb-id']) {
+  if (req.signedCookies[SECURE_COOKIE_NAME]) {
+    const id = req.signedCookies[SECURE_COOKIE_NAME]
     req.lbUser = {
       source,
-      id: req.signedCookies['lb-id'],
+      id,
       role: 'returning'
     }
-    // console.log('RETURNING lb-id:', req.signedCookies['lb-id'])
+    // console.log(`RETURNING ${SECURE_COOKIE_NAME}: ${id}`)
   } else {
     var id = Math.random().toString(36).substring(2)
     req.lbUser = { source, id, role: 'new' }
-    res.cookie('lb-id', id, { signed: true })
-    // console.log('CREATED lb-id:', id)
+    res.cookie(SECURE_COOKIE_NAME, id, { signed: true })
+    // console.log(`CREATED ${SECURE_COOKIE_NAME}: ${id}`)
   }
 
   next()
