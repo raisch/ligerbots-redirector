@@ -131,9 +131,7 @@ app.get('/api/redirects/:id', (req, res) => {
 
 // POST /api/redirects
 app.post('/api/redirects', async (req, res) => {
-  const { id, url } = req.json
-
-  console.log(req.json)
+  const { id, url } = req.body
 
   console.log(req.body)
 
