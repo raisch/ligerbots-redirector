@@ -132,7 +132,7 @@ app.get('/api/redirects/:id', (req, res) => {
 })
 
 // POST /api/redirects
-app.post('/api/redirects', async (req, res) => {
+app.post('/api/redirects', bodyParser.json(), async (req, res) => {
   const { id, url } = req.body
 
   console.log(req.body)
